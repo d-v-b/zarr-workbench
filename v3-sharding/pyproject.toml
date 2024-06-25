@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "v3-sharding"
+dynamic = ["version"]
+description = 'Experiments with sharding in zarr 3.xx'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Davis V Bennett", email = "davis.v.bennett@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["zarr==3.0.0.a0", "pytest", "tensorstore"]
+
+[project.urls]
+Documentation = "https://github.com/Davis V Bennett/v3-sharding#readme"
+Issues = "https://github.com/Davis V Bennett/v3-sharding/issues"
+Source = "https://github.com/Davis V Bennett/v3-sharding"
+
+[tool.hatch.version]
+path = "src/v3_sharding/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/v3_sharding tests}"
+
+[tool.coverage.run]
+source_pkgs = ["v3_sharding", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/v3_sharding/__about__.py",
+]
+
+[tool.coverage.paths]
+v3_sharding = ["src/v3_sharding", "*/v3-sharding/src/v3_sharding"]
+tests = ["tests", "*/v3-sharding/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]

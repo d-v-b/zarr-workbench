@@ -1,0 +1,1 @@
+testing sharding write performance in zarr-python 3.0.0a
