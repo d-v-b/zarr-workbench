@@ -71,3 +71,5 @@ def array_write(
         copy_array_serial_zarr(old, new, chunk_slices)
     else:
         copy_array_serial_tensorstore(old, new, chunk_slices)
+    
+    return new
