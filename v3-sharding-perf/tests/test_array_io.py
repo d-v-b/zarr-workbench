@@ -2,7 +2,7 @@ from typing import Literal
 import pytest
 import os
 import time
-from v3_sharding.array_write import array_write, zarray_to_tsarray
+from v3_sharding_perf.array_write import array_write, zarray_to_tsarray
 import numpy as np
 from shutil import rmtree
 from pathlib import Path
