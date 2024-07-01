@@ -77,7 +77,7 @@ def test_create_array(data_dir, zarr_format, codecs, shape, chunking, chunk_key,
     else:
         chunks = outer_chunks_normed
     
-    path = f'zarr-{zarr_format}/dtype-{dtype}/nd-{len(shape)}/co-{chunking[0]}ci-{chunking[1]}_ck-{chunk_key_translated}'
+    path = f'zarr-{zarr_format}/dtype-{dtype}/nd-{len(shape)}/co-{chunking[0]}_ci-{chunking[1]}_ck-{chunk_key_translated}'
     array = zcreate(
         store=store,
         path=path,
