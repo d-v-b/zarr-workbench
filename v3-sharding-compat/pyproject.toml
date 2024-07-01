@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "v3-sharding-compat"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Davis Vann Bennett", email = "davis.v.bennett@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["zarr==3.0.0.a0", "pytest"]
+
+[project.urls]
+Documentation = "https://github.com/d-v-b/v3-sharding-compat#readme"
+Issues = "https://github.com/d-v-b/v3-sharding-compat/issues"
+Source = "https://github.com/d-v-b/v3-sharding-compat"
+
+[tool.hatch.version]
+path = "src/v3_sharding_compat/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/v3_sharding_compat tests}"
+
+[tool.coverage.run]
+source_pkgs = ["v3_sharding_compat", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/v3_sharding_compat/__about__.py",
+]
+
+[tool.coverage.paths]
+v3_sharding_compat = ["src/v3_sharding_compat", "*/v3-sharding-compat/src/v3_sharding_compat"]
+tests = ["tests", "*/v3-sharding-compat/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
