@@ -22,7 +22,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["zarr==3.0.0.a0"]
+dependencies = ["zarr==3.0.0.a0", "pytest"]
 
 [project.urls]
 Documentation = "https://github.com/d-v-b/v3-sharding-compat#readme"

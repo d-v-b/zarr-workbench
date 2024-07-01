@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 import zarr
 import numpy as np
-from v3_sharding_compat import normalize_chunking
+from v3_sharding_compat import normalize_chunking, zcreate
 
 REPORT_DIR = Path(os.path.realpath(__file__)).parent.parent / 'data'
 
@@ -27,12 +27,12 @@ def data_dir():
     ])
 def test_normalize_chunking(shape, chunking):
     res = normalize_chunking(shape, chunking)
-    assert np.prod(np.divide(shape, res)) == chunking[0]
+    print(shape, chunking, res)
+    assert np.prod(np.divide(shape, res)) == chunking
     
         
 
-@pytest.mark.skip
-@pytest.mark.parametrize('zarr_format', [2,3])
+@pytest.mark.parametrize('zarr_format', [2, 3])
 @pytest.mark.parametrize('codecs', (None,))
 @pytest.mark.parametrize('shape', [
     (512,), 
@@ -60,19 +60,32 @@ def test_normalize_chunking(shape, chunking):
     'uint64', 
     'float32', 
     'float64'])
-def create_array(data_dir, zarr_format, codecs, shape, chunking, chunk_key, dtype):
+def test_create_array(data_dir, zarr_format, codecs, shape, chunking, chunk_key, dtype):
     attributes = {'about': 'a test array'}
-    store = zarr.store.LocalStore(root=data_dir)
+    store = zarr.store.LocalStore(root=data_dir, mode='w')    
+    outer_chunks_normed = normalize_chunking(shape, chunking[0])
+    inner_chunks_normed = normalize_chunking(outer_chunks_normed, chunking[1])
+    chunk_key_translated = "dot" if chunk_key is "." else "slash"
     
-    chunks_actual = normalize_chunking(shape, chunking[0])
-
-    array = zarr.create(
+    if chunking[1] > 1:
+        if zarr_format == 2:
+            raise NotImplementedError
+        chunks = {
+            'shape': outer_chunks_normed, 
+            'chunks': {'shape': inner_chunks_normed}}
+    
+    else:
+        chunks = outer_chunks_normed
+    
+    path = f'zarr-{zarr_format}/dtype-{dtype}/nd-{len(shape)}/co-{chunking[0]}ci-{chunking[1]}_ck-{chunk_key_translated}'
+    array = zcreate(
         store=store,
+        path=path,
         shape=shape, 
         dtype=dtype, 
         zarr_format=zarr_format, 
         attributes=attributes,
-        chunk_shape=chunks_actual,
-        chunk_key_encoding=('default', chunk_key),
-        codecs=codecs,
+        chunks=chunks,
         )
+
+    array[:] = np.arange(np.prod(shape)).reshape(shape).astype(dtype)
