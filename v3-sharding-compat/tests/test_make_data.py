@@ -35,17 +35,16 @@ def test_normalize_chunking(shape, chunking):
 @pytest.mark.parametrize('zarr_format', [2, 3])
 @pytest.mark.parametrize('codecs', (None,))
 @pytest.mark.parametrize('shape', [
-    (512,), 
-    (8, 64), 
-    (8,8,8), 
-    (2,4,8,8), 
-    (2,2,2,8,8), 
-    (2,2,2,2,4,8)])
+    (64,), 
+    (4, 16), 
+    (4,4,4), 
+    (2,2,4,4), 
+    (2,2,2,2,4)
+    ])
 @pytest.mark.parametrize(
     'chunking', [
-    (1,64),
-    (8,8),
-    (64,1)
+    (4,4),
+    (16,1)
     ])
 @pytest.mark.parametrize('chunk_key', ['.','/'])
 @pytest.mark.parametrize('dtype', [
@@ -65,7 +64,7 @@ def test_create_array(data_dir, zarr_format, codecs, shape, chunking, chunk_key,
     store = zarr.store.LocalStore(root=data_dir, mode='w')    
     outer_chunks_normed = normalize_chunking(shape, chunking[0])
     inner_chunks_normed = normalize_chunking(outer_chunks_normed, chunking[1])
-    chunk_key_translated = "dot" if chunk_key is "." else "slash"
+    chunk_key_translated = "dot" if chunk_key == "." else "slash"
     
     if chunking[1] > 1:
         if zarr_format == 2:

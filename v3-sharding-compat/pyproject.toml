@@ -22,7 +22,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["zarr==3.0.0.a0", "pytest"]
+dependencies = ["zarr@git+http://github.com/zarr-developers/zarr-python.git@v3", "pytest"]
 
 [project.urls]
 Documentation = "https://github.com/d-v-b/v3-sharding-compat#readme"
@@ -57,3 +57,6 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+[tool.hatch.metadata]
+allow-direct-references=true

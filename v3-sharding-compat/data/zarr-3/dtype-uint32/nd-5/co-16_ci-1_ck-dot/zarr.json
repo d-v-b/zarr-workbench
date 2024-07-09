@@ -1,0 +1,42 @@
+{
+  "shape": [
+    2,
+    2,
+    2,
+    2,
+    4
+  ],
+  "fill_value": 0,
+  "chunk_grid": {
+    "name": "regular",
+    "configuration": {
+      "chunk_shape": [
+        2,
+        2,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "attributes": {
+    "about": "a test array"
+  },
+  "zarr_format": 3,
+  "data_type": "uint32",
+  "chunk_key_encoding": {
+    "name": "default",
+    "configuration": {
+      "separator": "."
+    }
+  },
+  "codecs": [
+    {
+      "name": "bytes",
+      "configuration": {
+        "endian": "little"
+      }
+    }
+  ],
+  "node_type": "array"
+}
