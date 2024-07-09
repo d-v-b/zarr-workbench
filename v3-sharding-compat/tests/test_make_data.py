@@ -69,6 +69,7 @@ def test_create_array(data_dir, zarr_format, codecs, shape, chunking, chunk_key,
     
     if chunking[1] > 1:
         if zarr_format == 2:
+            pytest.xfail()
             raise NotImplementedError
         chunks = {
             'shape': outer_chunks_normed, 
@@ -78,6 +79,7 @@ def test_create_array(data_dir, zarr_format, codecs, shape, chunking, chunk_key,
         chunks = outer_chunks_normed
     
     path = f'zarr-{zarr_format}/dtype-{dtype}/nd-{len(shape)}/co-{chunking[0]}_ci-{chunking[1]}_ck-{chunk_key_translated}'
+    
     array = zcreate(
         store=store,
         path=path,
@@ -86,6 +88,7 @@ def test_create_array(data_dir, zarr_format, codecs, shape, chunking, chunk_key,
         zarr_format=zarr_format, 
         attributes=attributes,
         chunks=chunks,
+        dimension_separator=chunk_key
         )
 
     array[:] = np.arange(np.prod(shape)).reshape(shape).astype(dtype)
