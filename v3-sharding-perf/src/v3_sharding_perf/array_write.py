@@ -72,7 +72,12 @@ def array_write(
     if engine == 'zarr-python':
         if strategy == 'per_chunk':
             copy_array_serial_zarr(old, new, chunk_slices)
+        else:
+            copy_array_bulk_zarr(old, new)
     else:
-        copy_array_serial_tensorstore(old, new, chunk_slices)
+        if strategy == 'per_chunk':
+            copy_array_serial_tensorstore(old, new, chunk_slices)
+        else:
+            copy_array_serial_tensorstore(old, new, (slice(None,), ))
     
     return new
