@@ -50,7 +50,9 @@ def array_write(
         out_chunks: tuple[int, ...], 
         shard_chunks: tuple[int, ...], 
         dest_url: str, 
-        engine: Literal["zarr-python", "tensorstore"]):
+        engine: Literal["zarr-python", "tensorstore"],
+        strategy: Literal["bulk", "per_chunk"]):
+
     codec_pipeline = ShardingCodec(chunk_shape=shard_chunks, codecs=(BytesCodec(), BloscCodec(cname="zstd")))
     pre, suffix, write_array_path = dest_url.partition('.zarr/')
     write_path = pre+suffix
@@ -68,7 +70,8 @@ def array_write(
     chunk_slices = slices_from_chunks(new.shape, new.chunks)
     
     if engine == 'zarr-python':
-        copy_array_serial_zarr(old, new, chunk_slices)
+        if strategy == 'per_chunk':
+            copy_array_serial_zarr(old, new, chunk_slices)
     else:
         copy_array_serial_tensorstore(old, new, chunk_slices)
     
