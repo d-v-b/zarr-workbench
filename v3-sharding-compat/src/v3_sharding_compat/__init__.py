@@ -59,7 +59,7 @@ def zcreate(
         else:
             sharding_codec = sharding_codec
         
-        codecs = (*filters, sharding_codec(chunk_shape=subshard_size, codecs=(zarr.codecs.BytesCodec(), *compression)))
+        codecs = (*filters, sharding_codec(chunk_shape=subshard_size, codecs=(zarr.codecs.BytesCodec(), *compression), index_location='end'))
     else:
         codecs = (*filters, zarr.codecs.BytesCodec(), *compression)
 
@@ -91,6 +91,6 @@ def zcreate(
             attributes=attributes,
             chunk_shape=shard_size,
             chunk_key_encoding=(chunk_layout, dimension_separator),
-            codecs = codecs,
+            codecs=codecs,
             overwrite=True,
             )
